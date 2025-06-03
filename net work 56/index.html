@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>浮現的BMI</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #eee;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    input, button {
+      padding: 8px;
+      margin: 6px;
+      background: #222;
+      border: 1px solid #444;
+      color: #eee;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 1.4em;
+      white-space: pre-wrap;
+      border-left: 2px solid #888;
+      padding-left: 12px;
+      min-height: 2em;
+    }
+  </style>
+</head>
+<body>
+  <h1>身體密語計算器</h1>
+  <input type="number" id="height" placeholder="身高 (cm)">
+  <input type="number" id="weight" placeholder="體重 (kg)">
+  <button onclick="calculateBMI()">揭曉</button>
+
+  <div id="result"></div>
+
+  <script>
+    function calculateBMI() {
+      const height = parseFloat(document.getElementById('height').value);
+      const weight = parseFloat(document.getElementById('weight').value);
+      const resultEl = document.getElementById('result');
+      resultEl.textContent = ''; // 清空舊結果
+
+      if (!height || !weight || height <= 0 || weight <= 0) {
+        typeWriter("……數據之門尚未開啟，請輸入正確的身高與體重。");
+        return;
+      }
+
+      const bmi = weight / ((height / 100) ** 2);
+      let interpretation = '';
+
+      if (bmi < 18.5) interpretation = "體重過輕，如影隨風。";
+      else if (bmi < 24) interpretation = "體重適中，恰如其分。";
+      else if (bmi < 27) interpretation = "略有偏重，餘音繞樑。";
+      else interpretation = "體重過重，壓得天幕低垂。";
+
+      const message = `你的BMI是 ${bmi.toFixed(2)}。\n${interpretation}`;
+      typeWriter(message);
+    }
+
+    function typeWriter(text, i = 0) {
+      const resultEl = document.getElementById('result');
+      if (i < text.length) {
+        resultEl.textContent += text.charAt(i);
+        setTimeout(() => typeWriter(text, i + 1), 50);
+      }
+    }
+  </script>
+</body>
+</html>
